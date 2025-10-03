@@ -5,9 +5,7 @@ import {
   updateDoc, 
   deleteDoc, 
   getDocs, 
-  onSnapshot,
-  query,
-  orderBy 
+  onSnapshot
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Class, AttendanceRecord } from '../types';

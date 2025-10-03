@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Class, TimetableCell } from './types';
+import { Class } from './types';
 import { Trash2, Plus } from 'lucide-react';
 
 interface TimetableProps {
