@@ -1,46 +1,104 @@
-# Getting Started with Create React App
+# 出席管理Webアプリ
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+個人の授業出席を管理するWebアプリです。週単位の時間割形式で授業を確認し、各授業ごとに出席・欠席を記録できます。
 
-## Available Scripts
+## 機能
 
-In the project directory, you can run:
+- 📅 週次時間割表示（月曜日〜土曜日、1〜6限）
+- ✅ 出席・欠席記録（緑ボタン：出席、赤ボタン：欠席）
+- 📊 授業ごとの出席回数・欠席回数表示
+- ➕ 空きコマへの授業追加
+- 🗑️ 授業削除（確認ダイアログ付き）
+- 📱 スマホ・PC対応のレスポンシブデザイン
+- ☁️ Firebase Firestoreによるクラウド同期
 
-### `npm start`
+## 技術スタック
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **フロントエンド**: React + TypeScript + Tailwind CSS
+- **バックエンド**: Firebase Firestore
+- **アイコン**: Lucide React
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## セットアップ
 
-### `npm test`
+### 1. プロジェクトのクローン
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone <repository-url>
+cd attendance-manager
+npm install
+```
 
-### `npm run build`
+### 2. Firebase設定
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. [Firebase Console](https://console.firebase.google.com/)でプロジェクトを作成
+2. Firestore Databaseを有効化
+3. `src/firebase.ts`の設定を更新：
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```typescript
+const firebaseConfig = {
+  apiKey: "your-api-key",
+  authDomain: "your-project.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "your-app-id"
+};
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 3. Firestoreルール設定
 
-### `npm run eject`
+Firestoreのセキュリティルールを以下のように設定：
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true; // 開発用（本番では適切な認証を設定）
+    }
+  }
+}
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 4. アプリの起動
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+npm start
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+ブラウザで `http://localhost:3000` を開いてアプリを確認できます。
 
-## Learn More
+## 使用方法
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 授業の追加
+1. 空いている時間割のコマをクリック
+2. 授業名を入力して「追加」ボタンをクリック
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 出席記録
+1. 授業セル内の「出席」ボタン（緑）または「欠席」ボタン（赤）をクリック
+2. その日の出席状況が記録されます
+
+### 授業詳細の確認
+1. 授業名をクリック
+2. 出席回数・欠席回数が表示されます
+3. 右上のゴミ箱アイコンで授業を削除できます
+
+### 授業の削除
+1. 授業詳細モーダルでゴミ箱アイコンをクリック
+2. 確認ダイアログで「はい」を選択
+
+## デプロイ
+
+### Firebase Hosting
+
+```bash
+npm install -g firebase-tools
+firebase login
+firebase init hosting
+npm run build
+firebase deploy
+```
+
+## ライセンス
+
+MIT License
